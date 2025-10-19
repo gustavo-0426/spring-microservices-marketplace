@@ -1,0 +1,39 @@
+services:
+  microservice-user:
+    build:
+      context: ../
+      dockerfile: compose/Dockerfile
+    container_name: microservice-user
+    restart: always
+    networks:
+      - marketplace-network
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      SERVER_PORT: ${PORT}
+    ports:
+      - "9092:${PORT}"
+    depends_on:
+      - mysql9
+  mysql9:
+    image: mysql:9
+    container_name: mysql9
+    restart: always
+    networks:
+      - marketplace-network
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    volumes:
+      - mysql9-volume:/var/lib/mysql
+    ports:
+      - "3306:${DB_PORT}"
+networks:
+  marketplace-network:
+volumes:
+  mysql9-volume:

@@ -1,0 +1,28 @@
+server:
+  port: 9092
+
+spring:
+  application:
+    name: service-user
+  datasource:
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: true
+
+api:
+  version: v1
+
+# swagger = http://{host}:{port}/{api.version}/template/swagger-ui/index.html
+springdoc:
+  swagger-ui:
+    path: /${api.version}/template/
+
+logging:
+  level:
+    org:
+      springdoc: DEBUG
